@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # 'djangobower',
+    'bbs',
 ]
 
 MIDDLEWARE = [
@@ -75,9 +77,13 @@ WSGI_APPLICATION = 'mswang.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'mswang',
+        'USER': 'mswang',
+        'PASSWORD': 'mswang',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
+    }  
 }
 
 
@@ -103,6 +109,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/dev/topics/i18n/
 
+BOWER_PATH = '/usr/local/bin/bower'
+
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -113,8 +121,39 @@ USE_L10N = True
 
 USE_TZ = True
 
+LANGUAGE_CODE = 'zh-hans'
+
+LANGUAGES = (
+    ('en', 'English'),
+    ('zh-hans', 'Simplified Chinese'),
+)
+
+LOCALE_PATHS = (
+    os.path.join(BASE_DIR, 'locale/'),
+)
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'djangobower.finders.BowerFinder',
+)
+
+
+BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, 'components')
+
+BOWER_INSTALLED_APPS = (
+    'jquery',
+    'admin-lte',
+    'ionicons',
+    'font-awesome',
+    'moment',
+    'raphael',
+)
+  
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/dev/howto/static-files/
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 STATIC_URL = '/static/'

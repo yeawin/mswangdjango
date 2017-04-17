@@ -1,0 +1,2 @@
+*.pyc
+/mswang/mswang/__pycache__/*.pyc
