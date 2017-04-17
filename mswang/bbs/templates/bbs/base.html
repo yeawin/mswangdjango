@@ -1,0 +1,176 @@
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>{% block title %}PassAdmin{% endblock %}</title>
+  <meta name="description" content="{% block description %}{% endblock %}">
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.6 -->
+  <link rel="stylesheet" href="{% static 'AdminLTE/bootstrap/css/bootstrap.min.css' %}">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{% static 'font-awesome/css/font-awesome.min.css' %}">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="{% static 'ionicons/css/ionicons.min.css' %}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{% static 'AdminLTE/dist/css/AdminLTE.min.css' %}">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="{% static 'AdminLTE/dist/css/skins/_all-skins.min.css' %}">
+  <style type="text/css">
+    .dropdown-language .active{
+        background-color: rgb(60, 141, 188);
+        color:#fff;
+    }
+    .navbar-nav>.notifications-menu>.dropdown-menu>li.active .menu>li>a{
+        color:#fff;
+    }
+    .navbar-nav>.notifications-menu>.dropdown-menu>li.active .menu>li>a:hover{
+        background-color: rgb(60, 141, 188);
+    }
+  </style>
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body class="hold-transition skin-blue layout-top-nav">
+<div class="wrapper">
+
+  <header class="main-header">
+    <nav class="navbar navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a href="/" class="navbar-brand"><b>BBS</b></a>
+<!--           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+            <i class="fa fa-bars"></i>
+          </button> -->
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
+          <form class="navbar-form hidden" action="{% url 'set_language' %}" method="post" id="langform">
+            {% csrf_token %}
+            <!-- <input name="next" type="hidden" value="{{ request.resolver_match.url_name }}" /> -->
+            <input name="language" type="hidden" value="" />
+          </form>
+        </div>
+        <!-- /.navbar-collapse -->
+        <!-- Navbar Right Menu -->
+        <div class="navbar-custom-menu">
+          <ul class="nav navbar-nav">
+            <li class="dropdown">
+              <!-- Menu toggle button -->
+              <a href="#" class="dropdown-toggle">
+                {{ _("我要重置") }}
+              </a>
+            </li>
+            <li class="dropdown">
+              <!-- Menu toggle button -->
+              <a href="#" class="dropdown-toggle">
+                {{ _("进度查询") }}
+              </a>
+            </li>
+            <li class="dropdown">
+              <!-- Menu toggle button -->
+              <a href="/pa/accounts/login/" class="dropdown-toggle">
+                {{ _("认证是我") }}
+              </a>
+            </li>
+            <!-- Messages: style can be found in dropdown.less-->
+            <!-- Notifications Menu -->
+            <form class="navbar-form hidden" action="#" method="post" id="langform">
+              {% csrf_token %}
+              <!-- <input name="next" type="hidden" value="{{ request.resolver_match.url_name }}" /> -->
+              <input name="language" type="hidden" value="" />
+            </form>
+            <li class="dropdown notifications-menu">
+                {% get_current_language as LANGUAGE_CODE %}
+                <!-- Menu toggle button -->
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  <i class="fa fa-language"></i>
+                  <span class="label label-warning">{{ LANGUAGE_CODE }}</span>
+                </a>
+                <ul class="dropdown-menu dropdown-language">
+                  
+                  <!-- Current language: {{ LANGUAGE_CODE }} -->
+                  {% get_language_info_list for LANGUAGES as languages %}
+                  {% for language in languages %}
+                  <li {% if language.code == LANGUAGE_CODE %} class="active" {% endif %}>
+                    <!-- Inner Menu: contains the notifications -->
+                    <ul class="menu">
+                      <li><!-- start notification -->
+                        <a href="{% if language.code == LANGUAGE_CODE %}javascript:void(0);{% else %}javascript:set_language('{{ language.code }}'){% endif %}">
+                          <i class="fa fa-language text-aqua"></i>  {{ language.name_local }} ({{ language.code }})
+                        </a>
+                      </li>
+                      <!-- end notification -->
+                    </ul>
+                  </li>
+                  {% endfor %}
+                </ul>
+            </li>
+            <!-- Tasks Menu -->
+          </ul>
+        </div>
+        <!-- /.navbar-custom-menu -->
+      </div>
+      <!-- /.container-fluid -->
+    </nav>
+  </header>
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    {% if messages %}
+      <div class="error-page">
+        <div class="alert alert-warning alert-dismissible" role="alert">
+          <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+           <ul>
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+           </ul>
+          </div>
+        </div>
+  {% endif %}
+
+  {% block content %}
+
+  {% endblock %} 
+
+
+  </div>
+  <!-- /.content-wrapper -->
+  <footer class="main-footer">
+    <div class="container">
+      <strong>Copyright &copy; 2016-2017 <a href="http://inc.xmu.edu.cn">{{ _("厦门大学信息与网络中心") }}</a>.</strong> {{ _("版权所有") }}.
+    </div>
+  </footer>
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery 2.2.3 -->
+<script src="{% static 'AdminLTE/plugins/jQuery/jquery-2.2.3.min.js' %}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="{% static 'AdminLTE/plugins/jQueryUI/jquery-ui.min.js' %}"></script>
+<!-- <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script> -->
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<script>
+  $.widget.bridge('uibutton', $.ui.button);
+</script>
+<!-- Bootstrap 3.3.6 -->
+<script src="{% static 'AdminLTE/bootstrap/js/bootstrap.min.js' %}"></script>
+<!-- AdminLTE App -->
+<script src="{% static 'AdminLTE/dist/js/app.min.js' %}"></script>
+<script type="text/javascript">
+  function set_language(lang)
+  {
+    $('input[name=language]').val(lang);
+    $('#langform').submit();
+  }
+</script>
+</body>
+</html>
+
