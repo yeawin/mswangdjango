@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'djangobower',
+    'djangobower',
     'bbs',
 ]
 
@@ -56,7 +56,9 @@ ROOT_URLCONF = 'mswang.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'bbs', 'templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -109,7 +111,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/dev/topics/i18n/
 
-BOWER_PATH = '/usr/local/bin/bower'
+BOWER_PATH =  os.path.normpath('C:/Users/Administrator/AppData/Roaming/npm/bower.cmd')
 
 LANGUAGE_CODE = 'en-us'
 
